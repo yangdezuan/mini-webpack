@@ -142,23 +142,5 @@ if (process.env.NODE_ENV === 'production') {
       maxInitialRequests: 3,
       name: true
     })
-    /* new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }), */
-
-    /* new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendor'],
-      filename: '[name].js?[hash]',
-      minChunks: Infinity
-    }) */
-    /*  new htmlWebpackPlugin({
-      title: 'hall',
-      inject: false,
-      template: './public/src/viewTemplate/temp.html',
-      filename: '../../app/views/index.html'
-    }) */
   ]);
 }
