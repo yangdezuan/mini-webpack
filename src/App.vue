@@ -7,16 +7,20 @@
 <script>
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your App322'
+      msg: 'Welcome to Your Simple App'
     }
   }
 }
 </script>
 
 <style lang="scss">
-body{
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
   background-color: #fff;
 }
 #app {
@@ -29,7 +33,8 @@ body{
   background-color: #ccc;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
