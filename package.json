@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "cross-env NODE_ENV=development env_config=dev webpack-dev-server --hot --colors --inline --progress --open",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --mode production --progress --hide-modules"
   },
   "keywords": [],
   "author": "",
@@ -24,13 +24,12 @@
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "stylus-loader": "^3.0.2",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2",

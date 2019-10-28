@@ -5,15 +5,20 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const ISDEV = process.env.NODE_ENV === 'development';
 const ScssArr = ['vue-style-loader', 'css-loader', 'sass-loader'];
-const CssArr = ['css-loader'] ;
+const CssArr = ['css-loader'];
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/dist/',
-    filename: 'bundle.js'
+    filename: '[name].js?[hash]'
   },
   plugins: [
+    new ExtractTextPlugin({
+      filename: '[name].css?[hash]', //修改过的地方
+      allChunks: true
+    }),
+    //new ExtractTextPlugin('styles.css'),
     // make sure to include the plugin for the magic
     new VueLoaderPlugin() //Vue-loader在15.*之后的版本都是 vue-loader的使用都是需要伴生 VueLoaderPlugin的.
   ],
@@ -24,7 +29,7 @@ module.exports = {
         use: ISDEV
           ? ['vue-style-loader', 'css-loader']
           : ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
+              fallback: 'style-loader',
               use: CssArr
             })
       },
@@ -33,7 +38,7 @@ module.exports = {
         use: ISDEV
           ? ScssArr
           : ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
+              fallback: 'style-loader',
               use: CssArr
             })
       },
@@ -129,23 +134,26 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new ExtractTextPlugin({
-      filename: '[name].css?[hash]'
-    }),
-    new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.SplitChunksPlugin({
+      chunks: 'all',
+      minSize: 20000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: true
+    })
+    /* new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
         warnings: false
       }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
+    }), */
+
+    /* new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor'],
       filename: '[name].js?[hash]',
       minChunks: Infinity
-    })
+    }) */
     /*  new htmlWebpackPlugin({
       title: 'hall',
       inject: false,
