@@ -1,32 +1,40 @@
 const path = require('path');
-var webpack = require('webpack');
-var ISDEV = process.env.NODE_ENV === 'development';
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+//const htmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const ISDEV = process.env.NODE_ENV === 'development';
+const ScssArr = ['vue-style-loader', 'css-loader', 'sass-loader'];
+const CssArr = ['css-loader'] ;
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
-
+  plugins: [
+    // make sure to include the plugin for the magic
+    new VueLoaderPlugin() //Vue-loader在15.*之后的版本都是 vue-loader的使用都是需要伴生 VueLoaderPlugin的.
+  ],
   module: {
     rules: [
       {
         test: /\.css$/,
         use: ISDEV
-          ? 'vue-style-loader!css-loader'
+          ? ['vue-style-loader', 'css-loader']
           : ExtractTextPlugin.extract({
               fallback: 'vue-style-loader',
-              use: ['css-loader']
+              use: CssArr
             })
       },
       {
         test: /\.scss$/,
         use: ISDEV
-          ? 'vue-style-loader!css-loader!sass-loader'
+          ? ScssArr
           : ExtractTextPlugin.extract({
               fallback: 'vue-style-loader',
-              use: ['css-loader', 'sass-loader']
+              use: CssArr
             })
       },
       {
@@ -35,16 +43,16 @@ module.exports = {
         options: {
           loaders: {
             scss: ISDEV
-              ? 'vue-style-loader!css-loader!sass-loader'
+              ? ScssArr
               : ExtractTextPlugin.extract({
                   fallback: 'vue-style-loader',
-                  use: 'css-loader!sass-loader'
+                  use: ['css-loader', 'sass-loader']
                 }),
             css: ISDEV
-              ? 'vue-style-loader!css-loader'
+              ? ['vue-style-loader', 'css-loader']
               : ExtractTextPlugin.extract({
                   fallback: 'vue-style-loader',
-                  use: 'css-loader'
+                  use: CssArr
                 })
           }
         }
@@ -65,8 +73,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      /*   '@c': path.resolve('public/src/compontnts'),
-      '@a': path.resolve('public/src/assets') */
+      /*
+      '@c': path.resolve('public/src/compontnts'),
+      '@a': path.resolve('public/src/assets')
+      */
     },
     extensions: ['*', '.js', '.vue', '.json']
   },
@@ -136,5 +146,11 @@ if (process.env.NODE_ENV === 'production') {
       filename: '[name].js?[hash]',
       minChunks: Infinity
     })
+    /*  new htmlWebpackPlugin({
+      title: 'hall',
+      inject: false,
+      template: './public/src/viewTemplate/temp.html',
+      filename: '../../app/views/index.html'
+    }) */
   ]);
 }
